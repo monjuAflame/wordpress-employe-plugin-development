@@ -17,7 +17,7 @@ class Employee {
 
     public function employee_default_setup()
     {
-        $labels = array(
+        $employeeListLabels = array(
             'name'                  => _x( 'Employee', 'Employee Menu Name', 'employee' ),
             'singular_name'         => _x( 'Employee', 'Employee Menu Singular name', 'employee' ),
             'menu_name'             => _x( 'Employee', 'Admin Menu text', 'employee' ),
@@ -43,8 +43,8 @@ class Employee {
             'items_list_navigation' => _x( 'Employee list navigation', 'Screen reader text for the pagination heading on the post type listing screen. Default “Posts list navigation”/”Pages list navigation”. Added in 4.4', 'employee' ),
             'items_list'            => _x( 'Employee list', 'Screen reader text for the items list heading on the post type listing screen. Default “Posts list”/”Pages list”. Added in 4.4', 'employee' ),
         );     
-        $args = array(
-            'labels'             => $labels,
+        $employeeListArgs = array(
+            'labels'             => $employeeListLabels,
             'description'        => 'Employee List custom post type.',
             'public'             => true,
             'publicly_queryable' => true,
@@ -60,8 +60,36 @@ class Employee {
             'supports'           => array( 'title', 'editor', 'thumbnail' ),
             'show_in_rest'       => true
         );
+
+        register_post_type( 'employee_list', $employeeListArgs );
+
+
+        // register employee list texonomy
+        $employeeTypeLabels = array(
+            'name'              => _x( 'Employee Types', 'Employee Type Name', 'employee' ),
+            'singular_name'     => _x( 'Employee Type', 'Employee Type singular name', 'employee' ),
+            'search_items'      => __( 'Search Employee Types', 'employee' ),
+            'all_items'         => __( 'All Employee Types', 'employee' ),
+            'parent_item'       => __( 'Parent Employee Type', 'employee' ),
+            'parent_item_colon' => __( 'Parent Employee Type:', 'employee' ),
+            'edit_item'         => __( 'Edit Employee Type', 'employee' ),
+            'update_item'       => __( 'Update Employee Type', 'employee' ),
+            'add_new_item'      => __( 'Add New Employee Type', 'employee' ),
+            'new_item_name'     => __( 'New Employee Type Name', 'employee' ),
+            'menu_name'         => __( 'Employee Type', 'employee' ),
+        );
+
+        $employeTypeArgs = array(
+            'hierarchical'      => true,
+            'labels'            => $employeeTypeLabels,
+            'show_ui'           => true,
+            'show_admin_column' => true,
+            'query_var'         => true,
+            'rewrite'           => array( 'slug' => 'employee_type' ),
+        );
+
+        register_taxonomy( 'employee_type', array( 'employee_list' ), $employeTypeArgs );
         
-        register_post_type( 'employee_list', $args );
     }
 
 }
