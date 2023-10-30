@@ -16,7 +16,7 @@ class Employee {
         add_action( 'admin_enqueue_scripts', array($this, 'employee_scripts') );
         add_action( 'admin_enqueue_scripts', array($this, 'employee_styles') );
         add_action( 'add_meta_boxes', array($this, 'employee_custom_meta_boxes') );
-        // add_action( 'save_post', array($this, 'employee_metabox_data_save') );
+        add_action( 'save_post', array($this, 'employee_metabox_data_save') );
     }
 
     public function employee_scripts()
@@ -112,7 +112,19 @@ class Employee {
     }
 
     public function employee_information_callback()
-        {
+    {
+        $father = get_post_meta(get_the_ID(), 'emploee_father', true );
+        $mother = get_post_meta(get_the_ID(), 'emploee_mother', true);
+        $gender = get_post_meta(get_the_ID(), 'emploee_gender', true);
+        $dob = get_post_meta(get_the_ID(), 'emploee_dob', true);
+        $phone = get_post_meta(get_the_ID(), 'emploee_phone', true);
+        $designation = get_post_meta(get_the_ID(), 'emploee_designation', true);
+        $join_date = get_post_meta(get_the_ID(), 'emploee_join_date', true);
+        $passing_year_one = get_post_meta(get_the_ID(), 'emploee_passing_year_one', true);
+        $exam_name_one = get_post_meta(get_the_ID(), 'emploee_exam_name_one', true);
+        $passing_year_two = get_post_meta(get_the_ID(), 'emploee_passing_year_two', true);
+        $exam_name_two = get_post_meta(get_the_ID(), 'emploee_exam_name_two', true);
+        $skills = get_post_meta(get_the_ID(), 'emploee_skills', true);
             ?>
                 <div id="employee-info-tabs">
                     <ul>
@@ -124,64 +136,98 @@ class Employee {
                     <div id="personal-info">
                         <!-- father name -->
                         <p><label for="father_name">Father's Name</label></p>
-                        <p><input type="text" name="father_name" id="father_name" class="widefat"></p>
+                        <p><input type="text" value="<?php echo $father; ?>" name="father_name" id="father_name" class="widefat"></p>
 
                         <!-- mother name -->
                         <p><label for="mother_name">Mother's Name</label></p>
-                        <p><input type="text" name="mother_name" id="mother_name" class="widefat"></p>
+                        <p><input type="text" value="<?php echo $mother; ?>" name="mother_name" id="mother_name" class="widefat"></p>
                         
                         <!-- gender -->
                         <p>
-                            <input type="radio" name="gender" id="male" value="male">
+                            <input type="radio" name="gender" id="male" value="male" <?php if($gender == 'male') { echo "checked";  } ?>>
                             <label for="male">Male</label> <br>
                             
-                            <input type="radio" name="gender" id="female" value="female">
+                            <input type="radio" name="gender" id="female" value="female" <?php if($gender == 'female') { echo "checked";  } ?>>
                             <label for="female">Female</label>
                         </p>
 
                         <!-- age -->
-                        <p><label for="employee_dob">Date of Birth</label></p>
-                        <p><input type="date" name="employee_dob" id="employee_dob"></p>
+                        <p><label for="dob">Date of Birth</label></p>
+                        <p><input type="date" value="<?php echo $dob; ?>" name="dob" id="dob"></p>
+
+                        <!-- phone -->
+                        <p><label for="phone">Phone Number</label></p>
+                        <p><input type="text" value="<?php echo $phone; ?>" name="phone" id="phone"></p>
 
                     </div>
                     <div id="official-info">
                         <!-- designation -->
                         <p><label for="designation">Designation</label></p>
-                        <p><input type="text" name="designation" id="designation"></p>
+                        <p><input type="text" value="<?php echo $designation; ?>" name="designation" id="designation"></p>
                         <!-- join date -->
                         <p><label for="join_date">Joining Date</label></p>
-                        <p><input type="date" name="join_date" id="join_date"></p>
+                        <p><input type="date" value="<?php echo $join_date; ?>" name="join_date" id="join_date"></p>
                     </div>
                     <div id="academic-info">
                         <!-- one exam -->
                         <span>Exam One</span>
                         <p><label for="passing_year_one">Passing Year</label></p>
-                        <p><input type="text" name="passing_year_one" id="passing_year_one"></p>
+                        <p><input type="text" value="<?php echo $passing_year_one; ?>" name="passing_year_one" id="passing_year_one"></p>
                         
                         <p><label for="exam_name_one">Exam Name</label></p>
-                        <p><input type="text" name="exam_name_one" id="exam_name_one" class="widefat"></p>
+                        <p><input type="text" value="<?php echo $exam_name_one; ?>" name="exam_name_one" id="exam_name_one" class="widefat"></p>
                         
                         <hr>
 
                         <!-- two exam -->
                         <span>Exam Two</span>
                         <p><label for="passing_year_two">Passing Year</label></p>
-                        <p><input type="text" name="passing_year_two" id="passing_year_two"></p>
+                        <p><input type="text" value="<?php echo $passing_year_two; ?>" name="passing_year_two" id="passing_year_two"></p>
                         
                         <p><label for="exam_name_two">Exam Name</label></p>
-                        <p><input type="text" name="exam_name_two" id="exam_name_two" class="widefat"></p>
+                        <p><input type="text" value="<?php echo $exam_name_two; ?>" name="exam_name_two" id="exam_name_two" class="widefat"></p>
 
                     </div>
                     <div id="experiance-info">
-                        <!-- skill -->
-                        <p><label for="skill">Skill</label></p>
-                        <p><input type="text" name="skill" id="skill"></p>
+                        <!-- skills -->
+                        <p><label for="skills">Skills</label></p>
+                        <p><input type="text" value="<?php echo $skills; ?>" name="skills" id="skills"></p>
                     </div>
                 </div>
 
 
             <?php
-        }
+    }
+
+    public function employee_metabox_data_save()
+    {
+        $father = $_POST['father_name'];
+        $mother = $_POST['mother_name'];
+        $gender = $_POST['gender'];
+        $dob = $_POST['dob'];
+        $phone = $_POST['phone'];
+        $designation = $_POST['designation'];
+        $join_date = $_POST['join_date'];
+        $passing_year_one = $_POST['passing_year_one'];
+        $exam_name_one = $_POST['exam_name_one'];
+        $passing_year_two = $_POST['passing_year_two'];
+        $exam_name_two = $_POST['exam_name_two'];
+        $skills = $_POST['skills'];
+
+        update_post_meta(get_the_ID(), 'emploee_father', $father);
+        update_post_meta(get_the_ID(), 'emploee_mother', $mother);
+        update_post_meta(get_the_ID(), 'emploee_gender', $gender);
+        update_post_meta(get_the_ID(), 'emploee_dob', $dob);
+        update_post_meta(get_the_ID(), 'emploee_phone', $phone);
+        update_post_meta(get_the_ID(), 'emploee_designation', $designation);
+        update_post_meta(get_the_ID(), 'emploee_join_date', $join_date);
+        update_post_meta(get_the_ID(), 'emploee_passing_year_one', $passing_year_one);
+        update_post_meta(get_the_ID(), 'emploee_exam_name_one', $exam_name_one);
+        update_post_meta(get_the_ID(), 'emploee_passing_year_two', $passing_year_two);
+        update_post_meta(get_the_ID(), 'emploee_exam_name_two', $exam_name_two);
+        update_post_meta(get_the_ID(), 'emploee_skills', $skills);
+
+    }
 
 
 }
