@@ -201,18 +201,18 @@ class Employee {
 
     public function employee_metabox_data_save()
     {
-        $father = $_POST['father_name'];
-        $mother = $_POST['mother_name'];
-        $gender = $_POST['gender'];
-        $dob = $_POST['dob'];
-        $phone = $_POST['phone'];
-        $designation = $_POST['designation'];
-        $join_date = $_POST['join_date'];
-        $passing_year_one = $_POST['passing_year_one'];
-        $exam_name_one = $_POST['exam_name_one'];
-        $passing_year_two = $_POST['passing_year_two'];
-        $exam_name_two = $_POST['exam_name_two'];
-        $skills = $_POST['skills'];
+        $father = $_POST['father_name'] ?? null;
+        $mother = $_POST['mother_name'] ?? null;
+        $gender = $_POST['gender'] ?? null;
+        $dob = $_POST['dob'] ?? null;
+        $phone = $_POST['phone'] ?? null;
+        $designation = $_POST['designation'] ?? null;
+        $join_date = $_POST['join_date'] ?? null;
+        $passing_year_one = $_POST['passing_year_one'] ?? null;
+        $exam_name_one = $_POST['exam_name_one'] ?? null;
+        $passing_year_two = $_POST['passing_year_two'] ?? null;
+        $exam_name_two = $_POST['exam_name_two'] ?? null;
+        $skills = $_POST['skills'] ?? null;
 
         update_post_meta(get_the_ID(), 'emploee_father', $father);
         update_post_meta(get_the_ID(), 'emploee_mother', $mother);
