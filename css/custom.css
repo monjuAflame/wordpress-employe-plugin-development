@@ -1,0 +1,41 @@
+#employee-info-tabs {
+  overflow: hidden;
+  padding: 5px 0 10px;
+}
+#employee-info-tabs ul {
+  float: left;
+  overflow: hidden;
+  width: 25%;
+}
+
+#employee-info-tabs ul li {
+  padding: 10px 15px;
+  text-decoration: none;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+#employee-info-tabs ul li a {
+  text-decoration: none;
+}
+#employee-info-tabs .ui-tabs-panel {
+  display: block;
+  overflow: hidden;
+  width: 70%;
+  background-color: #f0f0f0;
+  padding: 10px 20px;
+  min-height: 200px;
+  border-radius: 10px;
+}
+#employee-info-tabs .ui-tabs-active {
+  background-image: linear-gradient(to right, #cacaca, #f0f0f0);
+}
+#employee-info-tabs .ui-tabs-active a:focus {
+  outline: none;
+  box-shadow: none;
+}
+#employee-info-tabs .ui-tabs-panel span {
+  padding: 3px 10px 5px 10px;
+  background: #979797;
+  color: white;
+  border-radius: 6px;
+}

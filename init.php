@@ -13,22 +13,36 @@ class Employee {
     public function __construct()
     {
         add_action( 'init', array($this, 'employee_default_setup') );
+        add_action( 'admin_enqueue_scripts', array($this, 'employee_scripts') );
+        add_action( 'admin_enqueue_scripts', array($this, 'employee_styles') );
+        add_action( 'add_meta_boxes', array($this, 'employee_custom_meta_boxes') );
+        // add_action( 'save_post', array($this, 'employee_metabox_data_save') );
+    }
+
+    public function employee_scripts()
+    {
+        wp_enqueue_script( 'jquery-ui-tabs');
+        wp_enqueue_script('employee_script', PLUGINS_URL('js/custom.js', __FILE__), array('jquery', 'jquery-ui-tabs'));
+    }
+    public function employee_styles()
+    {
+        wp_enqueue_style('employee_custom_css', PLUGINS_URL('css/custom.css', __FILE__));
     }
 
     public function employee_default_setup()
     {
         $employeeListLabels = array(
-            'name'                  => _x( 'Employee', 'Employee Menu Name', 'employee' ),
+            'name'                  => _x( 'Employees', 'Employee Menu Name', 'employee' ),
             'singular_name'         => _x( 'Employee', 'Employee Menu Singular name', 'employee' ),
-            'menu_name'             => _x( 'Employee', 'Admin Menu text', 'employee' ),
-            'name_admin_bar'        => _x( 'Employee', 'Add New on Toolbar', 'employee' ),
+            'menu_name'             => _x( 'Employees', 'Admin Menu text', 'employee' ),
+            'name_admin_bar'        => _x( 'Employees', 'Add New on Toolbar', 'employee' ),
             'add_new'               => __( 'Add New', 'Employee' ),
             'add_new_item'          => __( 'Add New Employee', 'employee' ),
             'new_item'              => __( 'New Employee', 'employee' ),
             'edit_item'             => __( 'Edit Employee', 'employee' ),
             'view_item'             => __( 'View Employee', 'employee' ),
             'all_items'             => __( 'All Employee', 'employee' ),
-            'search_items'          => __( 'Search Employee', 'employee' ),
+            'search_items'          => __( 'Search Employees', 'employee' ),
             'parent_item_colon'     => __( 'Parent Employee:', 'employee' ),
             'not_found'             => __( 'No Employee found.', 'employee' ),
             'not_found_in_trash'    => __( 'No Employee found in Trash.', 'employee' ),
@@ -89,8 +103,86 @@ class Employee {
         );
 
         register_taxonomy( 'employee_type', array( 'employee_list' ), $employeTypeArgs );
-        
+
     }
+
+    public function employee_custom_meta_boxes()
+    {
+        add_meta_box( 'employee_info', 'Employee Information', array($this, 'employee_information_callback'), 'employee_list', 'normal', 'high');
+    }
+
+    public function employee_information_callback()
+        {
+            ?>
+                <div id="employee-info-tabs">
+                    <ul>
+                        <li><a href="#personal-info">Personal Information</a></li>
+                        <li><a href="#official-info">Official Information</a></li>
+                        <li><a href="#academic-info">Academic Information</a></li>
+                        <li><a href="#experiance-info">Experiances</a></li>
+                    </ul>
+                    <div id="personal-info">
+                        <!-- father name -->
+                        <p><label for="father_name">Father's Name</label></p>
+                        <p><input type="text" name="father_name" id="father_name" class="widefat"></p>
+
+                        <!-- mother name -->
+                        <p><label for="mother_name">Mother's Name</label></p>
+                        <p><input type="text" name="mother_name" id="mother_name" class="widefat"></p>
+                        
+                        <!-- gender -->
+                        <p>
+                            <input type="radio" name="gender" id="male" value="male">
+                            <label for="male">Male</label> <br>
+                            
+                            <input type="radio" name="gender" id="female" value="female">
+                            <label for="female">Female</label>
+                        </p>
+
+                        <!-- age -->
+                        <p><label for="employee_dob">Date of Birth</label></p>
+                        <p><input type="date" name="employee_dob" id="employee_dob"></p>
+
+                    </div>
+                    <div id="official-info">
+                        <!-- designation -->
+                        <p><label for="designation">Designation</label></p>
+                        <p><input type="text" name="designation" id="designation"></p>
+                        <!-- join date -->
+                        <p><label for="join_date">Joining Date</label></p>
+                        <p><input type="date" name="join_date" id="join_date"></p>
+                    </div>
+                    <div id="academic-info">
+                        <!-- one exam -->
+                        <span>Exam One</span>
+                        <p><label for="passing_year_one">Passing Year</label></p>
+                        <p><input type="text" name="passing_year_one" id="passing_year_one"></p>
+                        
+                        <p><label for="exam_name_one">Exam Name</label></p>
+                        <p><input type="text" name="exam_name_one" id="exam_name_one" class="widefat"></p>
+                        
+                        <hr>
+
+                        <!-- two exam -->
+                        <span>Exam Two</span>
+                        <p><label for="passing_year_two">Passing Year</label></p>
+                        <p><input type="text" name="passing_year_two" id="passing_year_two"></p>
+                        
+                        <p><label for="exam_name_two">Exam Name</label></p>
+                        <p><input type="text" name="exam_name_two" id="exam_name_two" class="widefat"></p>
+
+                    </div>
+                    <div id="experiance-info">
+                        <!-- skill -->
+                        <p><label for="skill">Skill</label></p>
+                        <p><input type="text" name="skill" id="skill"></p>
+                    </div>
+                </div>
+
+
+            <?php
+        }
+
 
 }
 
