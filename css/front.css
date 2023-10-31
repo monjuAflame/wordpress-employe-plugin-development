@@ -1,0 +1,144 @@
+/* card design */
+
+.employee_list {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  justify-content: center;
+  width: 90%;
+  margin: 0 auto;
+  column-gap: 20px;
+}
+.card-container {
+  background-color: #231e39;
+  border-radius: 5px;
+  box-shadow: 0px 10px 20px -10px rgba(0, 0, 0, 0.75);
+  color: #b3b8cd;
+  padding-top: 30px;
+  position: relative;
+  width: 300px;
+  max-width: 100%;
+  text-align: center;
+}
+
+.card-container .pro {
+  color: #231e39;
+  background-color: #febb0b;
+  border-radius: 3px;
+  font-size: 14px;
+  font-weight: bold;
+  padding: 3px 7px;
+  position: absolute;
+  top: 30px;
+  left: 30px;
+}
+.employee_list h3 {
+  margin: 5px 0;
+  font-size: 20px;
+  text-transform: uppercase;
+}
+
+.employee_list h4 {
+  margin: 5px 0;
+  font-size: 12px;
+  text-transform: uppercase;
+}
+.employee_list h6 {
+  margin: 5px 0;
+  text-transform: uppercase;
+  font-size: 15px;
+}
+
+.employee_list p {
+  font-size: 14px;
+  line-height: 21px;
+}
+.profile-image img {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+}
+
+.toggle-button {
+  padding: 0;
+  height: 32px;
+  width: 32px;
+  border-radius: 20px;
+  overflow: hidden;
+  cursor: pointer;
+  font-size: 14px;
+  background-color: #362c62;
+  border: none;
+  margin: 5px 0;
+  color: #1f1a36;
+}
+.toggle-button:focus {
+  outline: none;
+}
+.toggle-button:hover {
+  border: none;
+  background-color: #342c57;
+}
+
+.employee_list table {
+  width: 100%;
+  padding: 3px 3px;
+  margin: 10px 0;
+  display: none;
+  border-collapse: collapse;
+  border-color: #362c62;
+}
+.employee_list table tr {
+  font-size: 14px;
+}
+.employee_list table tr td {
+  border: 1px solid #362c62;
+}
+.info {
+  background-color: #1f1a36;
+}
+.skills {
+  background-color: #1f1a36;
+  text-align: left;
+  padding: 8px 20px;
+  margin-top: 10px;
+}
+
+.skills ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.skills ul li {
+  border: 1px solid #2d2747;
+  border-radius: 2px;
+  display: inline-block;
+  font-size: 12px;
+  padding: 7px;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin: 40px;
+}
+
+.page-numbers.current {
+  padding: 5px 10px;
+  background-color: transparent;
+  border-radius: 5px;
+  font-size: 16px;
+  border: 1px solid #4d4d4d;
+  color: #4d4d4d;
+}
+.page-numbers {
+  padding: 5px 10px;
+  background-color: #1f1a36;
+  border: #313131;
+  border-radius: 5px;
+  color: #bfbfbf;
+  text-decoration: none;
+}

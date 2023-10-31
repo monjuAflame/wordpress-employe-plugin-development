@@ -13,20 +13,33 @@ class Employee {
     public function __construct()
     {
         add_action( 'init', array($this, 'employee_default_setup') );
-        add_action( 'admin_enqueue_scripts', array($this, 'employee_scripts') );
-        add_action( 'admin_enqueue_scripts', array($this, 'employee_styles') );
+        add_action( 'admin_enqueue_scripts', array($this, 'employee_backend_scripts') );
+        add_action( 'admin_enqueue_scripts', array($this, 'employee_backend_styles') );
+        add_action( 'wp_enqueue_scripts', array($this, 'employee_front_styles') );
+        add_action( 'wp_enqueue_scripts', array($this, 'employee_front_scripts') );
         add_action( 'add_meta_boxes', array($this, 'employee_custom_meta_boxes') );
         add_action( 'save_post', array($this, 'employee_metabox_data_save') );
+        add_shortcode( 'employee_list', array($this, 'employee_list_retrive') );
     }
 
-    public function employee_scripts()
+    public function employee_backend_scripts()
     {
         wp_enqueue_script( 'jquery-ui-tabs');
-        wp_enqueue_script('employee_script', PLUGINS_URL('js/custom.js', __FILE__), array('jquery', 'jquery-ui-tabs'));
+        wp_enqueue_script('employee_backend_script', PLUGINS_URL('js/backend.js', __FILE__), array('jquery', 'jquery-ui-tabs'));
     }
-    public function employee_styles()
+
+    public function employee_backend_styles()
     {
-        wp_enqueue_style('employee_custom_css', PLUGINS_URL('css/custom.css', __FILE__));
+        wp_enqueue_style('employee_backend_css', PLUGINS_URL('css/backend.css', __FILE__), array(), '1.0', 'all');
+    }
+
+    public function employee_front_styles()
+    {
+        wp_enqueue_style('employee_front_css', PLUGINS_URL('css/front.css', __FILE__), array(), '1.0', 'all');
+    }
+    public function employee_front_scripts()
+    {
+        wp_enqueue_script('employee_front_js', PLUGINS_URL('js/front.js', __FILE__), array('jquery'), '1.0', false);
     }
 
     public function employee_default_setup()
@@ -229,6 +242,116 @@ class Employee {
 
     }
 
+    public function employee_list_retrive($attr, $content)
+    {
+
+        $atts = shortcode_atts( array(
+            'count' => -1
+        ), $attr);
+
+        extract($atts);
+
+        ob_start();
+        ?>
+        <div class="alignfull">
+            <div class="employee_list">
+                <?php
+                    $employee = new WP_Query(array(
+                        'post_type'     => 'employee_list',
+                        'posts_per_page' =>  $count,
+                        'paged' => max( 1, get_query_var('paged') )
+                    ));
+                    while($employee->have_posts()) : $employee->the_post();
+                ?>
+                <div class="card-container">           
+                    <span class="pro">
+                        <?php  
+                            $terms = get_the_terms( get_the_id(), 'employee_type' );
+                            $count = count($terms);
+                            foreach ($terms as $key => $type) {
+                                echo  $type->name;
+                                echo  $count == 2 && $key == 0 ? ' | ' : ' ' ;
+                            }
+                        ?>
+                    </span>
+                    <div class="profile-image">
+                        <?php the_post_thumbnail(); ?>
+                    </div>
+                    <h3><?php the_title(); ?></h3>
+                    <h6><?php echo get_post_meta( get_the_ID(), 'emploee_designation', true ) ?></h6>
+                    
+                    <div class="skills">
+                        <ul>
+                            <?php 
+                            $skills = get_post_meta( get_the_ID(), 'emploee_skills', true );
+                            $slillsArg = explode(',', $skills); 
+                            foreach ($slillsArg as $skill) :?>
+                                <li><?php echo $skill; ?></li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
+                    <p><?php the_content(); ?></p>
+                    <div class="info" id="info-<?php echo get_the_ID(); ?>" >
+                        <button class="toggle-button" data-id="<?php echo get_the_ID(); ?>">
+                            &#11167;
+                        </button>
+                        
+                        <table border="1">
+                            <tr>
+                                <td>Father's Name:</td>
+                                <td><?php echo get_post_meta( get_the_ID(), 'emploee_father', true ) ?></td>
+                            </tr>
+                            <tr>
+                                <td>Mother's Name:</td>
+                                <td><?php echo get_post_meta( get_the_ID(), 'emploee_mother', true ) ?></td>
+                            </tr>
+                            <tr>
+                                <td>Date of Birth:</td>
+                                <td><?php echo get_post_meta( get_the_ID(), 'emploee_dob', true ) ?></td>
+                            </tr>
+                            <tr>
+                                <td>Gender:</td>
+                                <td><?php echo get_post_meta( get_the_ID(), 'emploee_gender', true ) ?></td>
+                            </tr>
+                            <tr>
+                                <td>Contact:</td>
+                                <td><?php echo get_post_meta( get_the_ID(), 'emploee_phone', true ) ?></td>
+                            </tr>
+                            <tr>
+                                <td>Join:</td>
+                                <td>
+                                    <?php 
+                                    $date = get_post_meta( get_the_ID(), 'emploee_join_date', true );
+                                    echo $date; ?>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <?php endwhile; ?>
+
+
+            </div>
+            <div class="pagination">
+                <div class="item">
+                    <?php
+                        
+                        echo paginate_links( array(
+                            'current' => max( 1, get_query_var('paged') ),
+                            'total' => $employee->max_num_pages,
+                            'prev_text' => 'Previous',
+                            'next_text' => 'Next',
+                            'show_all' => true,
+                            'prev_next ' => true,
+                        ) );
+                    
+                    ?>
+                </div>
+            </div>
+        </div>
+
+        <?php return ob_get_clean();
+    }
 
 }
 
