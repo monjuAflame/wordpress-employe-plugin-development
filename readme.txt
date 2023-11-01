@@ -2,9 +2,9 @@ Standard Employee List
 Contributors: ismaildev
 Tags: employee, list, employee list
 Requires at least: 4.7
-Tested up to: 5.4
-Stable tag: 4.3
-Requires PHP: 7.0
+Tested up to: 6.2
+Stable tag: 6.0
+Requires PHP: 8.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
