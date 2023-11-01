@@ -1,6 +1,6 @@
 <?php 
 /*
-Plugin Name: Employee List Slider
+Plugin Name: Standard Employee List 
 Plugin URI: 
 Author: Ismail Hossain
 Author URI: http://ismailhossaindev.com
@@ -19,7 +19,8 @@ class Employee {
         add_action( 'wp_enqueue_scripts', array($this, 'employee_front_scripts') );
         add_action( 'add_meta_boxes', array($this, 'employee_custom_meta_boxes') );
         add_action( 'save_post', array($this, 'employee_metabox_data_save') );
-        add_shortcode( 'employee_list', array($this, 'employee_list_retrive') );
+        add_shortcode( 'employee-list', array($this, 'employee_list_retrive') );
+		add_action( 'vc_before_init', array($this, 'visual_composer_support') );
     }
 
     public function employee_backend_scripts()
@@ -250,7 +251,7 @@ class Employee {
         ), $attr);
 
         extract($atts);
-
+        
         ob_start();
         ?>
         <div class="alignfull">
@@ -353,6 +354,27 @@ class Employee {
         <?php return ob_get_clean();
     }
 
+    public function visual_composer_support(){
+		if(function_exists('vc_map')){
+			vc_map(array(
+				'name' => 'Employee List',
+				'base' => 'employee-list',
+				'id' => 'employee-list',
+                'category' => 'Content',
+                'description' => 'Easy Employee manage',
+                'icon' => PLUGINS_URL('icon/list.png', __FILE__),
+				'params' => array(
+					array(
+						'heading' => 'How Many Employee to show',
+						'param_name' => 'count',
+						'type' => 'textfield',
+					)
+				)
+			));
+		}
+	}
+
 }
 
 $employee = new Employee();
+$employee->visual_composer_support();

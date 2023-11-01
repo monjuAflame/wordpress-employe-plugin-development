@@ -1,12 +1,12 @@
 /* card design */
 
 .employee_list {
-  display: grid;
-  grid-template-columns: auto auto auto;
+  display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   width: 90%;
   margin: 0 auto;
-  column-gap: 20px;
+  gap: 20px;
 }
 .card-container {
   background-color: #231e39;
